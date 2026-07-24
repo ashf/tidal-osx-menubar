@@ -4,6 +4,8 @@ A macOS menu bar widget for controlling the Tidal desktop app. Playback
 controls (prev/play-pause/next) and the current track name are drawn
 directly in the menu bar strip itself — no dropdown or popup required.
 
+> Written with [Claude Code](https://claude.com/claude-code).
+
 ## How it works
 
 Tidal's desktop app has no public API or AppleScript dictionary, so this
