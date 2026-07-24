@@ -22,7 +22,6 @@ struct MenuBarControlsView: View {
             } else {
                 Text("Tidal not playing")
                     .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
                     .contentShape(Rectangle())
                     .onTapGesture { openTidal() }
             }
