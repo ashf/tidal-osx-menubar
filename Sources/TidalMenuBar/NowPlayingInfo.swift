@@ -6,12 +6,12 @@ struct NowPlayingInfo {
     let elapsedTime: Double?
     let duration: Double?
 
-    init(json: [String: Any]) {
-        title = json["title"] as? String
-        artist = json["artist"] as? String
-        album = json["album"] as? String
-        elapsedTime = json["elapsedTime"] as? Double
-        duration = json["duration"] as? Double
-        isPlaying = (json["playbackRate"] as? Double ?? 0) > 0
+    init(rawJSON json: [String: Any]) {
+        title = json["kMRMediaRemoteNowPlayingInfoTitle"] as? String
+        artist = json["kMRMediaRemoteNowPlayingInfoArtist"] as? String
+        album = json["kMRMediaRemoteNowPlayingInfoAlbum"] as? String
+        elapsedTime = json["kMRMediaRemoteNowPlayingInfoElapsedTime"] as? Double
+        duration = json["kMRMediaRemoteNowPlayingInfoDuration"] as? Double
+        isPlaying = (json["kMRMediaRemoteNowPlayingInfoPlaybackRate"] as? Double ?? 0) > 0
     }
 }

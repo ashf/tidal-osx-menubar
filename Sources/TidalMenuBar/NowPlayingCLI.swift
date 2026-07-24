@@ -14,6 +14,13 @@ enum NowPlayingCLI {
         case play, pause, togglePlayPause, next, previous
     }
 
+    /// macOS's Now Playing session is system-wide, not per-app — whichever
+    /// app last claimed it owns it, and `nowplaying-cli`'s commands act on
+    /// that owner. To keep this widget Tidal-specific rather than a
+    /// universal remote, info/controls are only surfaced when Tidal itself
+    /// is the current owner.
+    static let tidalBundleIdentifier = "com.tidal.desktop"
+
     private static let candidatePaths = [
         "/opt/homebrew/bin/nowplaying-cli",
         "/usr/local/bin/nowplaying-cli"
@@ -22,14 +29,16 @@ enum NowPlayingCLI {
     static let binaryPath: String? = candidatePaths.first { FileManager.default.isExecutableFile(atPath: $0) }
 
     static func fetchNowPlayingInfo() -> NowPlayingInfo? {
-        guard let binaryPath else { return nil }
-        let fields = ["title", "artist", "album", "duration", "elapsedTime", "playbackRate"]
-        guard let output = run(binaryPath, arguments: ["get", "--json"] + fields),
+        guard let binaryPath,
+              let output = run(binaryPath, arguments: ["get-raw"]),
               let data = output.data(using: .utf8),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return nil
         }
-        return NowPlayingInfo(json: json)
+        guard json["kMRMediaRemoteNowPlayingInfoClientBundleIdentifier"] as? String == tidalBundleIdentifier else {
+            return nil
+        }
+        return NowPlayingInfo(rawJSON: json)
     }
 
     static func send(_ command: Command) {

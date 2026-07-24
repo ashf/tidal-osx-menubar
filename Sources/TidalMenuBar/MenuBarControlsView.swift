@@ -20,7 +20,7 @@ struct MenuBarControlsView: View {
                     .contentShape(Rectangle())
                     .onTapGesture { openTidal() }
             } else {
-                Text("Nothing playing")
+                Text("Tidal not playing")
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                     .contentShape(Rectangle())
@@ -28,8 +28,11 @@ struct MenuBarControlsView: View {
             }
 
             iconButton("backward.end.fill", action: monitor.previous)
+                .disabled(monitor.nowPlaying == nil)
             iconButton((monitor.nowPlaying?.isPlaying ?? false) ? "pause.fill" : "play.fill", action: monitor.togglePlayPause)
+                .disabled(monitor.nowPlaying == nil)
             iconButton("forward.end.fill", action: monitor.next)
+                .disabled(monitor.nowPlaying == nil)
         }
         .padding(.horizontal, 8)
         .frame(height: 22)

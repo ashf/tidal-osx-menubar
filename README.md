@@ -24,6 +24,15 @@ This means control is limited to transport actions (play/pause/next/prev)
 and whatever now-playing metadata Tidal publishes to the system — no
 access to search, playlists, or library browsing.
 
+macOS's Now Playing session is system-wide and shared by every app, not
+per-app — whichever app last claimed it owns it, and generic media
+commands act on that owner. To keep this widget Tidal-specific rather than
+a universal remote, it checks the session's owning bundle identifier
+(`com.tidal.desktop`) and only shows/controls playback when Tidal itself
+currently owns the session; otherwise it shows "Tidal not playing" with
+disabled controls, even if some other app (Music, a browser tab, etc.) is
+actively playing.
+
 ## Requirements
 
 - macOS 13+
